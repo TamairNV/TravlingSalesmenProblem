@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Rv6DusaPqR4=",
+  "success": true,
+  "projectFilePath": "/Users/tnv/RiderProjects/TravlingSalesmenProblem/TravlingSalesmenProblem/TravlingSalesmenProblem.csproj",
+  "expectedPackageFiles": [
+    "/Users/tnv/.nuget/packages/raylib-cs/7.0.2/raylib-cs.7.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}
