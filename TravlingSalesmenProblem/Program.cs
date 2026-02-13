@@ -8,8 +8,8 @@ class Program
     {
         // Initialize the window
         Raylib.InitWindow(800, 600, "Sales");
-        Raylib.SetTargetFPS(60);
-        City.CreateCities(1224,25,new Tuple<int, int>(800,600));
+        Raylib.SetTargetFPS(6000);
+        City.CreateCities(1224,new Tuple<int, int>(800,600));
         float timer = 0.0f;
         while (!Raylib.WindowShouldClose())
         {
@@ -24,12 +24,13 @@ class Program
             
             timer += Raylib.GetFrameTime(); 
 
-            if (timer >= 0.5f)
+            if (timer >= 0.01f)
             {
 
-                City.Improve();
+                
                 timer = 0.0f; // Reset timer
             }
+            City.Improve();
 
             
             Raylib.EndDrawing();

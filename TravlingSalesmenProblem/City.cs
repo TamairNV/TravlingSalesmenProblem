@@ -12,6 +12,13 @@ public struct Position
         this.x = x;
         this.y = y;
     }
+    public static float GetDistance(Position p1, Position p2)
+    {
+        float dx = p2.x - p1.x;
+        float dy = p2.y - p1.y;
+    
+        return Math.Abs(MathF.Sqrt((dx * dx) + (dy * dy)));
+    }
 }
 
 public class City
@@ -20,6 +27,10 @@ public class City
     public static int size = 10;
     private string name;
     private Position pos;
+    private static int CitySize = 50;
+    
+    private static float temperature = 100.0f; 
+    private static float coolingRate = 0.9999f;  
     
     
 
@@ -35,10 +46,10 @@ public class City
         Raylib.DrawCircle(pos.x, pos.y,size, Color.Blue);
     }
 
-    public static void CreateCities(int seed,int CityCount, Tuple<int,int> bounds)
+    public static void CreateCities(int seed, Tuple<int,int> bounds)
     {
         Random ran = new Random(seed);
-        for (int i = 0; i < CityCount; i++)
+        for (int i = 0; i < CitySize; i++)
         {
             int x = ran.Next(10, bounds.Item1-10);
             int y = ran.Next(10, bounds.Item2-10);
@@ -87,17 +98,25 @@ public class City
 
     public static void Improve()
     {
-        Random ran = new Random(1245);
+        Random ran = new Random();
         for (int i = 0; i < Cities.Count-1; i++)
         {
+            int randomCityIndex = ran.Next(1, Cities.Count - 1);
+            if (Position.GetDistance(Cities[i].pos, Cities[i+1].pos) > Position.GetDistance(Cities[i].pos, Cities[randomCityIndex].pos) )
+            {
+                Swap(i,randomCityIndex );
+            }
 
-            Swap(i, ran.Next(1, Cities.Count - 1));
-                
+
+
             
         }
     }
 
     public static int stuckCalls = 0;
+    public static float lastStuckTotal = float.MaxValue;
+    public static City[] lastStuckPath;
+    public static float best = float.MaxValue;
     public static void Swap(int i, int j)
     {
         City temp = Cities[i + 1];
@@ -105,20 +124,27 @@ public class City
         Cities[j] = temp;
         float newTotal = FindPathLength();
 
-        if (newTotal > currentTotal && stuckCalls < 30)
+        float diff = newTotal - currentTotal;
+        if (diff < 0 || (Math.Exp(-diff / temperature) > Random.Shared.NextDouble()))
+        {
+            currentTotal = newTotal;
+            if (currentTotal < best)
+            {
+                best = currentTotal;
+            }
+            Console.WriteLine(currentTotal + " " + best);
+
+        }else
         {
             temp = Cities[i + 1];
             Cities[i + 1] = Cities[j];
             Cities[j] = temp;
-            Console.WriteLine(stuckCalls);
             stuckCalls++;
         }
-        else
-        {
-            stuckCalls = 0;
-            Console.WriteLine(newTotal);
-            currentTotal = newTotal;
-        }
+        
+        temperature *= coolingRate;
+        
+
     }
 
     public static float FindPathLength()
