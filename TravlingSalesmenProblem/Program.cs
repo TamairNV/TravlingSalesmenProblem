@@ -10,7 +10,7 @@ class Program
         Raylib.InitWindow(800, 600, "Sales");
         Raylib.SetTargetFPS(60);
         City.CreateCities(1224,25,new Tuple<int, int>(800,600));
-        
+        float timer = 0.0f;
         while (!Raylib.WindowShouldClose())
         {
             
@@ -18,9 +18,18 @@ class Program
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.White);
             City.DrawCities();
+            City.DrawLines();
+            
+            
+            
+            timer += Raylib.GetFrameTime(); 
 
-            // Draw a Line: (StartPos, EndPos, Thickness, Color)
-            Raylib.DrawLineEx(new Vector2(50, 50), new Vector2(200, 50), 3, Color.Black);
+            if (timer >= 0.5f)
+            {
+
+                City.Improve();
+                timer = 0.0f; // Reset timer
+            }
 
             
             Raylib.EndDrawing();
@@ -28,4 +37,8 @@ class Program
 
         Raylib.CloseWindow();
     }
+    
+    
+    
+    
 }
