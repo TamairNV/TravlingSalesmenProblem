@@ -2,6 +2,12 @@
 
 A visual implementation of the classic Traveling Salesperson Problem written in C#. It generates a random set of cities and uses a **Simulated Annealing** algorithm to progressively find the shortest path connecting them all. Everything is rendered in real-time using Raylib.
 
+## Preview
+
+<p align="center">
+  <img src="TSP.gif" alt="TSP Visualization" width="600"/>
+</p>
+
 ## Features
 
 * **Procedural City Generation:** Randomly generates non-overlapping cities within a given boundary.
